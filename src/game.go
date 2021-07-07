@@ -24,6 +24,7 @@ type Game struct {
 
 func NewGame(deck Deck) *Game {
 	g := &Game{
+		Id:       NewObjectId(),
 		Decks:    []Deck{deck},
 		zarIndex: -1,
 	}

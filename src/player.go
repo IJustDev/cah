@@ -21,6 +21,7 @@ type Player struct {
 
 func NewPlayer(name string) *Player {
 	return &Player{
+		Id:   NewObjectId(),
 		Name: name,
 	}
 }
