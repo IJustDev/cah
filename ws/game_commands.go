@@ -16,5 +16,5 @@ func (c *StartGameCommand) Parameters() []string {
 func (c *StartGameCommand) Execute(params map[string]string) string {
 	d := cah.GetDefaultDeck()
 	g := cah.NewGame(*d)
-	return g.Id
+	return NewGameCommandResult(*g).Response()
 }

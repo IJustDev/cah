@@ -16,7 +16,7 @@ func (c *LoginCommand) Parameters() []string {
 func (c *LoginCommand) Execute(params map[string]string) string {
 	username := params["username"]
 	p := cah.NewPlayer(username)
-	return p.Id
+	return NewPlayerCommandResult(*p).Response()
 }
 
 type JoinGameCommand struct {
