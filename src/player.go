@@ -16,7 +16,6 @@ type Player struct {
 	Name        string `json:"name"`
 	Answers     []Answer
 	CurrentGame *Game
-	IsZar       bool
 }
 
 func NewPlayer(name string) *Player {
@@ -38,7 +37,7 @@ func (p *Player) Join(game *Game) {
 }
 
 func (p *Player) LayAnswers(answers []Answer) bool {
-	if p.IsZar {
+	if p.IsZar() {
 		return false
 	}
 	AnswerPlayedEvent.Trigger(PlayerAnswer{
@@ -49,9 +48,13 @@ func (p *Player) LayAnswers(answers []Answer) bool {
 }
 
 func (p *Player) PickCard(playerAnswer PlayerAnswer) bool {
-	if !p.IsZar {
+	if !p.IsZar() {
 		return false
 	}
 	AnswerPickedEvent.Trigger(playerAnswer, *p.CurrentGame)
 	return true
+}
+
+func (p Player) IsZar() bool {
+	return p.CurrentGame.CurrentRound.Zar.Name == p.Name
 }
