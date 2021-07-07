@@ -50,14 +50,13 @@ func TestPlayerShouldBeAbleToLayAnswers(t *testing.T) {
 		}), false, "Zar should not be able to lay an answer")
 	AssertEqual(t, g.Players[1].LayAnswers(
 		[]cah.Answer{
-			g.CurrentRound.Zar.Answers[0],
+			g.Players[1].Answers[0],
 		}), true, "Player should be able to lay an answer")
 	AssertEqual(t, g.Players[2].LayAnswers(
 		[]cah.Answer{
-			g.CurrentRound.Zar.Answers[0],
+			g.Players[2].Answers[0],
 		}), true, "Player should be able to lay an answer")
 
-	AssertEqual(t, g.CurrentRound.Answers[0].PlayerName, "P1", "First answers should be played by P1")
 }
 
 func TestPlugin(t *testing.T) {

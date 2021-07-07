@@ -19,7 +19,6 @@ type Game struct {
 	Decks        []Deck
 	zarIndex     int
 	roundCount   int
-	PlayersLaid  int
 }
 
 func NewGame(deck Deck) *Game {
@@ -33,7 +32,7 @@ func NewGame(deck Deck) *Game {
 }
 
 func (g *Game) StartGame() {
-	g.CurrentRound = NewRound(g.determineRandomQuestion(), g.determineNewZar())
+	g.CurrentRound = NewRound(g.DetermineRandomQuestion(), g.DetermineNewZar())
 	g.GivePlayerCards(true, 8)
 	GameStartedEvent.Trigger(*g)
 }
@@ -52,7 +51,7 @@ func (g *Game) GivePlayerCards(giveZar bool, amount int) {
 
 func (g *Game) NextRound() {
 	g.LastRound = g.CurrentRound
-	g.CurrentRound = NewRound(g.determineRandomQuestion(), g.determineNewZar())
+	g.CurrentRound = NewRound(g.DetermineRandomQuestion(), g.DetermineNewZar())
 	g.GivePlayerCards(false, g.LastRound.Question.PlaceholderAmount)
 	RoundStartedEvent.Trigger(RoundStartedEventPayload{
 		Round:      *g.CurrentRound,
@@ -65,7 +64,7 @@ func (g *Game) getRandomAnswer() Answer {
 	return g.Decks[0].Answers[0]
 }
 
-func (g *Game) determineNewZar() *Player {
+func (g *Game) DetermineNewZar() *Player {
 	if g.zarIndex == len(g.Players)-1 {
 		g.zarIndex = 0
 	} else {
@@ -74,7 +73,7 @@ func (g *Game) determineNewZar() *Player {
 	return g.Players[g.zarIndex]
 }
 
-func (g *Game) determineRandomQuestion() Question {
+func (g *Game) DetermineRandomQuestion() Question {
 	return g.Decks[0].Questions[0]
 }
 
