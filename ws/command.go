@@ -1,11 +1,7 @@
 package ws
 
 type Command interface {
-	Name() string
-	ParameterInt() int
-	Parameters()
-	CommandResult()
-}
-
-type CommandResult interface {
+	Command() string
+	Parameters() []string
+	Execute(map[string]string) string
 }
