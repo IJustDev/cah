@@ -28,6 +28,7 @@ func NewGame(deck Deck) *Game {
 		zarIndex: -1,
 	}
 	AllGames = append(AllGames, g)
+	GameCreatedEvent.Trigger(g)
 	return g
 }
 

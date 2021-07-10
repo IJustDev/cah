@@ -8,6 +8,7 @@ func NewEventListener() *EventListener {
 }
 
 func (e *EventListener) Subscribe() {
+	GameCreatedEvent.Register(gameCreated)
 	GameStartedEvent.Register(gameStarted)
 	RoundStartedEvent.Register(roundStarted)
 	PlayerJoinedEvent.Register(playerJoined)
@@ -16,7 +17,12 @@ func (e *EventListener) Subscribe() {
 	PlayerReceivedAnswersEvent.Register(playerReceivedAnswers)
 }
 
+func gameCreated(g Game) {
+
+}
+
 func gameStarted(g Game) {
+
 }
 
 func roundStarted(payload RoundStartedEventPayload) {
