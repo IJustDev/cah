@@ -2,11 +2,13 @@ package ws
 
 import (
 	"bytes"
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
+	cah "github.com/royalzsoftware/cah/src"
 )
 
 const (
@@ -20,7 +22,7 @@ const (
 	pingPeriod = (pongWait * 9) / 10
 
 	// Maximum message size allowed from peer.
-	maxMessageSize = 512
+	maxMessageSize = 1024
 )
 
 var (
@@ -46,6 +48,12 @@ type Client struct {
 	send chan []byte
 }
 
+type ClientRequest struct {
+	PlayerId string
+	Command  string
+	Params   map[string]string
+}
+
 func (c *Client) readPump() {
 	defer func() {
 		c.hub.unregister <- c
@@ -63,7 +71,7 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		c.hub.broadcast <- message
+		c.send <- message
 	}
 }
 
@@ -87,7 +95,18 @@ func (c *Client) writePump() {
 			if err != nil {
 				return
 			}
-			w.Write([]byte(HandleCommand(string(message))))
+			var clientRequest ClientRequest
+			err = json.Unmarshal([]byte(message), &clientRequest)
+			if err != nil {
+				log.Printf("Error unmarshalling")
+			}
+			log.Printf("Handling incoming request: %v", clientRequest)
+			player := cah.GetPlayerById(clientRequest.PlayerId)
+			response, err := json.Marshal(HandleCommand(&clientRequest, player))
+			if err != nil {
+				log.Printf("Error Marshalling")
+			}
+			w.Write([]byte(response))
 
 			// Add queued chat messages to the current websocket message.
 			n := len(c.send)

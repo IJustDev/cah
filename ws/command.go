@@ -4,8 +4,7 @@ import cah "github.com/royalzsoftware/cah/src"
 
 type Command interface {
 	Command() string
-	Parameters() []string
-	Execute(map[string]string) string
+	Execute(map[string]string, *cah.Player) interface{}
 }
 
 type CommandResult interface {

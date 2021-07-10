@@ -1,32 +1,27 @@
 package ws
 
-import "strings"
+import cah "github.com/royalzsoftware/cah/src"
 
-func HandleCommand(command string) string {
+type ErrorResponse struct {
+	Error int
+}
+
+func HandleCommand(request *ClientRequest, player *cah.Player) interface{} {
 	allCommands := []Command{
 		&StartGameCommand{},
 		&LoginCommand{},
+		&JoinGameCommand{},
+		&GetCardsCommand{},
 	}
-	s := strings.Split(command, " ")
-	com := s[0]
-	params := s[1:]
+	com := request.Command
+	params := request.Params
 	for _, element := range allCommands {
 		if element.Command() == com {
-			if len(element.Parameters()) == len(params) {
-				paramsMap := generateParamsMap(element, params)
-				return element.Execute(paramsMap)
+			if element.Command() != "login" && player == nil {
+				return &ErrorResponse{Error: 2}
 			}
+			return element.Execute(params, player)
 		}
 	}
-	return "1"
-}
-
-func generateParamsMap(command Command, params []string) map[string]string {
-	paramsMap := map[string]string{}
-	index := 0
-	for _, el := range params {
-		paramsMap[el] = params[index]
-		index = index + 1
-	}
-	return paramsMap
+	return &ErrorResponse{Error: 1}
 }

@@ -19,10 +19,12 @@ type Player struct {
 }
 
 func NewPlayer(name string) *Player {
-	return &Player{
+	p := &Player{
 		Id:   NewObjectId(),
 		Name: name,
 	}
+	AllPlayers = append(AllPlayers, p)
+	return p
 }
 
 func (p *Player) Join(game *Game) {
