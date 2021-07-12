@@ -11,7 +11,7 @@ func main() {
 	f.LoadAllPlugins("./")
 
 	e := cah.NewEventListener()
-	e.Subscribe()
+	e.Subscribe(nil)
 
 	ws.Start()
 }

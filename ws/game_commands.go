@@ -12,6 +12,7 @@ func (c *StartGameCommand) Command() string {
 func (c *StartGameCommand) Execute(params map[string]string, player *cah.Player) interface{} {
 	d := cah.GetDefaultDeck()
 	g := cah.NewGame(*d)
+	g.StartGame()
 	return NewGameCommandResult(*g).Response()
 }
 

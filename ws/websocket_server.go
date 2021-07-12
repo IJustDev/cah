@@ -2,11 +2,11 @@ package ws
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/websocket"
+	cah "github.com/royalzsoftware/cah/src"
 )
 
 var addr = flag.String("addr", ":8080", "http service address")
@@ -28,9 +28,12 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 func Start() {
 	hub := NewHub()
 	go hub.run()
+
+	eventListener := cah.NewEventListener()
+	eventListener.Subscribe(hub.broadcast)
+
 	http.HandleFunc("/", serveHome)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("Hello World")
 		ServeWs(hub, w, r)
 	})
 	http.ListenAndServe(*addr, nil)
