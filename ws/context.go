@@ -1,4 +1,4 @@
-package src
+package ws
 
 type Context struct {
 	Broadcast chan []byte
