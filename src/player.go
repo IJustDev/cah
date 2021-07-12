@@ -42,6 +42,7 @@ func (p *Player) LayAnswers(answers []Answer) bool {
 	if p.IsZar() {
 		return false
 	}
+	p.CurrentGame.PlayerLaidAnswers(p, answers)
 	AnswerPlayedEvent.Trigger(PlayerAnswer{
 		PlayerId: p.Id,
 		Answers:  answers,
