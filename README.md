@@ -1,6 +1,13 @@
-# CAH RoyalCards
+<div align="center">
+  
+  # CAH RoyalCards
+  
+  ![Badge](https://github.com/royalzsoftware/cah/actions/workflows/go.yml/badge.svg)
+  
 
-CAH RoyalCards is a card game like Cards Against Humanity.
+  CAH RoyalCards is a card game like Cards Against Humanity.
+
+</div>
 
 ## Current Features
 - Library for a Cards Against Humanity flow (/src)
