@@ -12,6 +12,18 @@ func TestGameShouldContainThreePlayers(t *testing.T) {
 	AssertEqual(t, len(g.Players), 3, "Players should be two")
 }
 
+func TestGameShouldNotStartWithLessThanThreePlayers(t *testing.T) {
+	deck := cah.GetDefaultDeck()
+	g := cah.NewGame(*deck)
+
+	p1 := cah.NewPlayer("P1")
+	p2 := cah.NewPlayer("P2")
+	p1.Join(g)
+	p2.Join(g)
+
+	AssertEqual(t, g.StartGame(), false, "Game should not be startable with less than three players")
+}
+
 func TestGameStartRoundShouldNotBeNil(t *testing.T) {
 	g := SetUpDefaultGame()
 	AssertNotNil(t, g.CurrentRound, "Current round should not be nil")

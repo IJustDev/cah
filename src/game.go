@@ -32,10 +32,14 @@ func NewGame(deck Deck) *Game {
 	return g
 }
 
-func (g *Game) StartGame() {
+func (g *Game) StartGame() bool {
 	g.CurrentRound = NewRound(g.DetermineRandomQuestion(), g.DetermineNewZar())
 	g.GivePlayerCards(true, 8)
+	if len(g.Players) < 3 {
+		return false
+	}
 	GameStartedEvent.Trigger(*g)
+	return true
 }
 
 func (g *Game) GivePlayerCards(giveZar bool, amount int) {
