@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	cah "github.com/royalzsoftware/cah/src"
 )
 
 var addr = flag.String("addr", ":8080", "http service address")
@@ -29,7 +28,7 @@ func Start() {
 	hub := NewHub()
 	go hub.run()
 
-	eventListener := cah.NewEventListener()
+	eventListener := NewEventListener()
 	eventListener.Subscribe(hub.broadcast)
 
 	http.HandleFunc("/", serveHome)

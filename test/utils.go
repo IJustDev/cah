@@ -26,9 +26,6 @@ func SetUpDefaultGame() *cah.Game {
 }
 
 func SetUpCustomGame(playerAmount int, state int) *cah.Game {
-	e := cah.NewEventListener()
-	e.Subscribe(nil)
-
 	deck := cah.GetDefaultDeck()
 	g := cah.NewGame(*deck)
 
