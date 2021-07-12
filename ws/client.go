@@ -71,7 +71,18 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		c.send <- message
+		var clientRequest ClientRequest
+		err = json.Unmarshal([]byte(message), &clientRequest)
+		if err != nil {
+			log.Printf("Error unmarshalling")
+		}
+		log.Printf("Handling incoming request: %v", clientRequest)
+		player := cah.GetPlayerById(clientRequest.PlayerId)
+		response, err := json.Marshal(HandleCommand(&clientRequest, player))
+		if err != nil {
+			log.Printf("Error Marshalling")
+		}
+		c.send <- response
 	}
 }
 
@@ -95,18 +106,7 @@ func (c *Client) writePump() {
 			if err != nil {
 				return
 			}
-			var clientRequest ClientRequest
-			err = json.Unmarshal([]byte(message), &clientRequest)
-			if err != nil {
-				log.Printf("Error unmarshalling")
-			}
-			log.Printf("Handling incoming request: %v", clientRequest)
-			player := cah.GetPlayerById(clientRequest.PlayerId)
-			response, err := json.Marshal(HandleCommand(&clientRequest, player))
-			if err != nil {
-				log.Printf("Error Marshalling")
-			}
-			w.Write([]byte(response))
+			w.Write([]byte(message))
 
 			// Add queued chat messages to the current websocket message.
 			n := len(c.send)
