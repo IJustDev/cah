@@ -1,6 +1,7 @@
 package test
 
 import (
+	"reflect"
 	"strconv"
 	"testing"
 
@@ -9,6 +10,13 @@ import (
 
 func AssertEqual(t *testing.T, a interface{}, b interface{}, message string) {
 	if a == b {
+		return
+	}
+	t.Fatal(message)
+}
+
+func AssertNil(t *testing.T, a interface{}, message string) {
+	if reflect.ValueOf(a).IsZero() {
 		return
 	}
 	t.Fatal(message)
