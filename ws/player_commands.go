@@ -9,10 +9,10 @@ func (c *LoginCommand) Command() string {
 	return "login"
 }
 
-func (c *LoginCommand) Execute(params map[string]string, player *cah.Player) interface{} {
+func (c *LoginCommand) Execute(params map[string]string, player *cah.Player) Response {
 	username := params["username"]
 	p := cah.NewPlayer(username)
-	return NewPlayerCommandResult(*p).Response()
+	return Success(p.Id)
 }
 
 type JoinGameCommand struct {
@@ -22,6 +22,6 @@ func (c *JoinGameCommand) Command() string {
 	return "join_game"
 }
 
-func (c *JoinGameCommand) Execute(params map[string]string, player *cah.Player) interface{} {
-	return params["gameId"]
+func (c *JoinGameCommand) Execute(params map[string]string, player *cah.Player) Response {
+	return Success(nil)
 }

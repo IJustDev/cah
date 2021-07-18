@@ -2,13 +2,10 @@ package ws
 
 import cah "github.com/royalzsoftware/cah/src"
 
-type ErrorResponse struct {
-	Error int
-}
-
 func HandleCommand(request *ClientRequest, player *cah.Player) interface{} {
 	allCommands := []Command{
 		&StartGameCommand{},
+		&CreateGameCommand{},
 		&LoginCommand{},
 		&JoinGameCommand{},
 		&GetCardsCommand{},
@@ -18,10 +15,10 @@ func HandleCommand(request *ClientRequest, player *cah.Player) interface{} {
 	for _, element := range allCommands {
 		if element.Command() == com {
 			if element.Command() != "login" && player == nil {
-				return &ErrorResponse{Error: 2}
+				return NotLoggedIn()
 			}
 			return element.Execute(params, player)
 		}
 	}
-	return &ErrorResponse{Error: 1}
+	return CommandNotFound()
 }

@@ -4,51 +4,52 @@ import cah "github.com/royalzsoftware/cah/src"
 
 type Command interface {
 	Command() string
-	Execute(map[string]string, *cah.Player) interface{}
+	Execute(map[string]string, *cah.Player) Response
 }
 
-type CommandResult interface {
-	Response() string
+type Response struct {
+	ErrorCode int
+	Details   interface{}
+	Data      interface{}
 }
 
-type StringCommandResult struct {
-	Value string
-}
-
-func NewStringCommandResult(response string) *StringCommandResult {
-	return &StringCommandResult{
-		Value: response,
+func Success(data interface{}) Response {
+	return Response{
+		ErrorCode: 0,
+		Data:      data,
 	}
 }
 
-func (c StringCommandResult) Response() string {
-	return c.Value
-}
-
-type GameCommandResult struct {
-	Value cah.Game
-}
-
-func NewGameCommandResult(game cah.Game) *GameCommandResult {
-	return &GameCommandResult{
-		Value: game,
+func NotLoggedIn() Response {
+	return Response{
+		ErrorCode: 1,
 	}
 }
 
-func (c GameCommandResult) Response() string {
-	return c.Value.Id
-}
-
-type PlayerCommandResult struct {
-	Value cah.Player
-}
-
-func NewPlayerCommandResult(player cah.Player) *PlayerCommandResult {
-	return &PlayerCommandResult{
-		Value: player,
+func CommandNotFound() Response {
+	return Response{
+		ErrorCode: 2,
+		Details:   "Command not found",
 	}
 }
 
-func (c PlayerCommandResult) Response() string {
-	return c.Value.Id
+func NotInGame() Response {
+	return Response{
+		ErrorCode: 3,
+		Details:   "Not ingame",
+	}
+}
+
+func AlreadyInGame() Response {
+	return Response{
+		ErrorCode: 4,
+		Details:   "Already ingame",
+	}
+}
+
+func NotFound() Response {
+	return Response{
+		ErrorCode: 5,
+		Details:   "Not found",
+	}
 }
