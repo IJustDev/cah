@@ -2,7 +2,8 @@ package src
 
 var AllGames []*Game
 
-func GetGameById(id string) *Game {
+// Searches all created games and returns one game matching the requested id
+func FindGameById(id string) *Game {
 	for _, element := range AllGames {
 		if element.Id == id {
 			return element

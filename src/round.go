@@ -1,10 +1,13 @@
 package src
 
 type Round struct {
-	Question      Question
-	Answers       []PlayerAnswer
+	Question Question
+	// All the answers players laid in this specific round
+	Answers []PlayerAnswer
+	// Will be set after the Zar picked the winning card
 	WinningAnswer PlayerAnswer
-	Zar           *Player
+	// The player who is going to pick the funniest card
+	Zar *Player
 	// laying = 0, picking = 1, recap = 2
 	State int
 }
