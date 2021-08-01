@@ -54,8 +54,12 @@ func (p *Player) PickCard(playerAnswer PlayerAnswer) bool {
 	if !p.IsZar() {
 		return false
 	}
-	AnswerPickedEvent.Trigger(playerAnswer, *p.CurrentGame)
-	return true
+
+	if ok := p.CurrentGame.CurrentRound.AnswerPicked(playerAnswer, *p); ok {
+		AnswerPickedEvent.Trigger(playerAnswer, *p.CurrentGame)
+		return true
+	}
+	return false
 }
 
 func (p Player) IsZar() bool {
