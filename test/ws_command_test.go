@@ -61,3 +61,45 @@ func TestStartGameIfPlayerDidntJoinAnyGameGameShouldNotWork(t *testing.T) {
 	result := cmd.Execute(params, p)
 	AssertEqual(t, result.ErrorCode, 3, "Player outside the game should not be able to start the game")
 }
+
+func TestJoinGameIfAlreadyInGame(t *testing.T) {
+	params := make(map[string]string)
+	g := SetUpDefaultGame()
+	params["gameId"] = g.Id
+	cmd := ws.JoinGameCommand{}
+	p := cah.NewPlayer("player")
+	AssertNil(t, p.CurrentGame, "The current game should be nil")
+	AssertEqual(t, cmd.Execute(params, p).ErrorCode, 0, "Command should have succeeded")
+	errorCode := cmd.Execute(params, p).ErrorCode
+	AssertEqual(t, errorCode, 4, "Expected: 4; Actual: "+strconv.Itoa(errorCode))
+}
+
+func TestGetCardsCommandShouldSucceed(t *testing.T) {
+	params := make(map[string]string)
+	g := SetUpDefaultGame()
+	p := g.Players[0]
+	cmd := ws.GetCardsCommand{}
+	response := cmd.Execute(params, p).Data.(ws.GetCardsCommandPayload)
+
+	expectedAmountZar := cah.START_ANSWERS - g.CurrentRound.Question.PlaceholderAmount
+
+	AssertEqual(t,
+		len(response.Answers),
+		expectedAmountZar,
+		"Zar should have "+
+			strconv.Itoa(
+				expectedAmountZar,
+			)+
+			" answers",
+	)
+}
+
+func TestPlayCardWhileNotInGame(t *testing.T) {
+	params := make(map[string]string)
+	params["cardId"] = "invalidId"
+	cmd := ws.PlayCardGameCommand{}
+	g := SetUpDefaultGame()
+	p := g.Players[1] // Is Player
+	res := cmd.Execute(params, p)
+
+}

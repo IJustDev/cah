@@ -76,3 +76,21 @@ func TestPlugin(t *testing.T) {
 
 	SetUpDefaultGame()
 }
+
+func TestZarShouldBeAbleToPickACard(t *testing.T) {
+	g := SetUpCustomGame(3, 1)
+	zar := g.Players[0]
+
+	AssertEqual(
+		t,
+		zar.PickCard(g.CurrentRound.Answers[0]),
+		true,
+		"Zar should have been able to pick a card.",
+	)
+	AssertEqual(
+		t,
+		g.CurrentRound.State,
+		2,
+		"Round state should have switched to recap",
+	)
+}
