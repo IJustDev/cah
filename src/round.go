@@ -26,19 +26,14 @@ func (r *Round) AnswerPlayed(playerAnswer PlayerAnswer) {
 	r.Answers = append(r.Answers, playerAnswer)
 }
 
-func (r *Round) AnswerPicked(winningAnswer PlayerAnswer) {
-	r.WinningAnswer = winningAnswer
-	r.State = 2
-}
-
-func (r *Round) ZarPick(answer *Answer, player Player) bool {
-	if r.State != 1 || r.Zar.Name != player.Name {
+func (r *Round) AnswerPicked(winningAnswer PlayerAnswer, player Player) bool {
+	if r.State != 1 || r.Zar.Id != player.Id {
 		return false
 	}
+	r.WinningAnswer = winningAnswer
 	r.State = 2
 	return true
 }
-
 func (r *Round) ChangeState(newState int) bool {
 	if r.State == newState {
 		return false

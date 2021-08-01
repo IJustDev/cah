@@ -51,15 +51,7 @@ func TestGameZarPickOrder(t *testing.T) {
 	AssertEqual(t, g.CurrentRound.Zar.Name, "P1", "Player one should have been the zar; "+g.CurrentRound.Zar.Name)
 }
 
-func TestZarShouldNotBeAbleToLayAnswers(t *testing.T) {
-	g := SetUpDefaultGame()
-	AssertEqual(t, g.CurrentRound.Zar.LayAnswers(
-		[]cah.Answer{
-			g.CurrentRound.Zar.Answers[0],
-		}), false, "Zar should not be able to lay an answer")
-}
-
-func TestPlayerShouldBeAbleToLayAnswers(t *testing.T) {
+func TestPlayerShouldBeAbleToLayCardButZarNot(t *testing.T) {
 	g := SetUpDefaultGame()
 	AssertEqual(t, g.Players[0].LayAnswers(
 		[]cah.Answer{
@@ -74,6 +66,7 @@ func TestPlayerShouldBeAbleToLayAnswers(t *testing.T) {
 			g.Players[2].Answers[0],
 		}), true, "Player should be able to lay an answer")
 
+	AssertEqual(t, g.CurrentRound.State, 1, "Round state should have switched to picking.")
 }
 
 func TestPlugin(t *testing.T) {
