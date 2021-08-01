@@ -45,18 +45,12 @@ func (c *PlayCardCommand) Command() string {
 }
 
 func (c *PlayCardCommand) Execute(params map[string]string, player *cah.Player) Response {
-	if _, ok := params["gameId"]; !ok {
-		return InvalidRequest()
-	}
-	if answerIds, ok := params["answerIds"]; !ok {
+	if _, ok := params["answerIds"]; !ok {
 		return InvalidRequest()
 	}
 
 	if player.CurrentGame != nil {
-		game := cah.FindGameById(params["gameId"])
-		answers := cah.FindAnswersById()
-		player.LayAnswers(answers)
 		return Success(nil)
 	}
-	return AlreadyInGame()
+	return NotInGame()
 }

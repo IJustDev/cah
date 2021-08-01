@@ -96,10 +96,9 @@ func TestGetCardsCommandShouldSucceed(t *testing.T) {
 
 func TestPlayCardWhileNotInGame(t *testing.T) {
 	params := make(map[string]string)
-	params["cardId"] = "invalidId"
-	cmd := ws.PlayCardGameCommand{}
-	g := SetUpDefaultGame()
-	p := g.Players[1] // Is Player
+	params["answerIds"] = "invalid-id"
+	cmd := ws.PlayCardCommand{}
+	p := cah.NewPlayer("")
 	res := cmd.Execute(params, p)
-
+	AssertEqual(t, res.ErrorCode, 3, "Expected: 3; Actual: "+strconv.Itoa(res.ErrorCode))
 }
