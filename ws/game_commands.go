@@ -45,6 +45,12 @@ func (c *StartGameCommand) Execute(params map[string]string, player *cah.Player)
 	return Success(nil)
 }
 
+type GetCardsCommandPayload struct {
+	Answers []cah.Answer
+}
+
+// Returns all the cards a player has currently has on his hand for his current
+// game
 type GetCardsCommand struct {
 }
 
@@ -57,5 +63,7 @@ func (c *GetCardsCommand) Execute(params map[string]string, player *cah.Player) 
 	if game == nil {
 		return NotInGame()
 	}
-	return Success(game.Id)
+	return Success(GetCardsCommandPayload{
+		Answers: player.Answers,
+	})
 }
