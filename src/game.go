@@ -2,6 +2,10 @@ package src
 
 var AllGames []*Game
 
+const (
+	START_ANSWERS = 8
+)
+
 // Searches all created games and returns one game matching the requested id
 func FindGameById(id string) *Game {
 	for _, element := range AllGames {
@@ -35,7 +39,11 @@ func NewGame(deck Deck) *Game {
 
 func (g *Game) StartGame() bool {
 	g.CurrentRound = NewRound(g.DetermineRandomQuestion(), g.DetermineNewZar())
-	g.GivePlayerCards(true, 8)
+
+	placeHolderAmount := g.CurrentRound.Question.PlaceholderAmount
+
+	g.GivePlayerCards(true, START_ANSWERS-placeHolderAmount)
+	g.GivePlayerCards(false, placeHolderAmount)
 	if len(g.Players) < 3 {
 		return false
 	}
@@ -45,6 +53,9 @@ func (g *Game) StartGame() bool {
 
 func (g *Game) GivePlayerCards(giveZar bool, amount int) {
 	for _, player := range g.Players {
+		if !giveZar && player.Id == g.CurrentRound.Zar.Id {
+			continue
+		}
 		for i := 0; i != amount; i++ {
 			player.Answers = append(player.Answers, g.getRandomAnswer())
 			PlayerReceivedAnswersEvent.Trigger(PlayerReceivedAnswersEventPayload{

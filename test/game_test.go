@@ -29,10 +29,15 @@ func TestGameStartRoundShouldNotBeNil(t *testing.T) {
 	AssertNotNil(t, g.CurrentRound, "Current round should not be nil")
 }
 
-func TestGameAllPlayersShouldHaveEightCards(t *testing.T) {
+func TestGameAllPlayersExceptZarShouldSameAmountOfAnswers(t *testing.T) {
 	g := SetUpDefaultGame()
-	AssertEqual(t, len(g.Players[0].Answers), 8, "Player one has: "+strconv.Itoa(len(g.Players[0].Answers)))
-	AssertEqual(t, len(g.Players[1].Answers), 8, "Player two has: "+strconv.Itoa(len(g.Players[0].Answers)))
+
+	playerAmount := cah.START_ANSWERS
+	placeHolderAmount := g.CurrentRound.Question.PlaceholderAmount
+	zarAmount := playerAmount - placeHolderAmount
+
+	AssertEqual(t, len(g.Players[0].Answers), zarAmount, "Player one has: "+strconv.Itoa(len(g.Players[0].Answers)))
+	AssertEqual(t, len(g.Players[1].Answers), playerAmount, "Player two has: "+strconv.Itoa(len(g.Players[0].Answers)))
 }
 
 func TestGameZarPickOrder(t *testing.T) {
