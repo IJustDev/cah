@@ -13,6 +13,7 @@ type Response struct {
 	Data      interface{}
 }
 
+// ErrorCode 0
 func Success(data interface{}) Response {
 	return Response{
 		ErrorCode: 0,
@@ -20,12 +21,14 @@ func Success(data interface{}) Response {
 	}
 }
 
+// ErrorCode 1
 func NotLoggedIn() Response {
 	return Response{
 		ErrorCode: 1,
 	}
 }
 
+// ErrorCode 2
 func CommandNotFound() Response {
 	return Response{
 		ErrorCode: 2,
@@ -33,6 +36,7 @@ func CommandNotFound() Response {
 	}
 }
 
+// ErrorCode 3
 func NotInGame() Response {
 	return Response{
 		ErrorCode: 3,
@@ -40,6 +44,7 @@ func NotInGame() Response {
 	}
 }
 
+// ErrorCode 4
 func AlreadyInGame() Response {
 	return Response{
 		ErrorCode: 4,
@@ -47,6 +52,7 @@ func AlreadyInGame() Response {
 	}
 }
 
+// ErrorCode 5
 func NotFound() Response {
 	return Response{
 		ErrorCode: 5,
