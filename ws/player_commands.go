@@ -10,6 +10,9 @@ func (c *LoginCommand) Command() string {
 }
 
 func (c *LoginCommand) Execute(params map[string]string, player *cah.Player) Response {
+	if _, ok := params["username"]; !ok {
+		return InvalidRequest()
+	}
 	username := params["username"]
 	p := cah.NewPlayer(username)
 	return Success(p.Id)

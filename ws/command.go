@@ -59,3 +59,11 @@ func NotFound() Response {
 		Details:   "Not found",
 	}
 }
+
+// ErrorCode 6
+func InvalidRequest() Response {
+	return Response{
+		ErrorCode: 6,
+		Details:   "Invalid request",
+	}
+}
